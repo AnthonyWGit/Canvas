@@ -8,6 +8,7 @@ body
 {
     background-color: black;
     overflow: hidden;
+    image-rendering: pixelated;
 }
 .cell
 {
