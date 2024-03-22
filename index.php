@@ -15,8 +15,10 @@
     </canvas>
 </div>
 </body>
+<script src="./public/js/utils.js"></script>
 <script src="./public/js/Overworld.js"></script>
 <script src="./public/js/GameObject.js"></script>
 <script src="./public/js/Sprite.js"></script>
+<script src="./public/js/OverworldMap.js"></script>
 <script src="./public/js/init.js"></script>
 </html>
