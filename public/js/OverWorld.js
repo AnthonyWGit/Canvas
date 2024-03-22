@@ -6,9 +6,19 @@ class Overworld {
         this.ctx = this.canvas.getContext("2d")
     }
 
+    startGameLoop(){
+        const step = () => {
+            console.log("step")
+            requestAnimationFrame(() => { //to keep calling the function when a new fram beggings 
+                step()
+            })
+        }
+        step()
+    }
+
     init()
     {
-
+        this.startGameLoop()
         //coordinates
         // const x = 5
         // const y = 5
