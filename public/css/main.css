@@ -7,7 +7,7 @@
 body
 {
     background-color: black;
-    overflow: hidden;
+    overflow: scroll;
     image-rendering: pixelated;
 }
 .cell
@@ -48,9 +48,9 @@ body
 .game-wrapper
 {
     position: relative;
-    width: 480px;
-    height: 480px;
+    width: 1440px;
+    height: 1440px;
     outline: 1px solid white;
     margin: 0 auto;
-    transform: scale(3); 
+    transform: scale(2) translateY(25%) translateX(25%); 
 }
