@@ -4,11 +4,25 @@ class Overworld {
         this.element = config.element
         this.canvas = this.element.querySelector("#game")
         this.ctx = this.canvas.getContext("2d")
+        this.map = null;
     }
 
     startGameLoop(){
         const step = () => {
-            console.log("step")
+            //clear off canvas on each frame
+            this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+            //draw terrain
+            this.map.drawLowerImage(this.ctx)
+
+            //draw GameObjects 
+            Object.values(this.map.gameObjects).forEach(object =>
+                {
+                    object.sprite.draw(this.ctx)
+                })
+
+            //draw stuff on top
+            this.map.drawUpperImage(this.ctx)
+
             requestAnimationFrame(() => { //to keep calling the function when a new fram beggings 
                 step()
             })
@@ -18,39 +32,8 @@ class Overworld {
 
     init()
     {
+        this.map = new OverworldMap(window.OverworldMaps.WorldMap)
         this.startGameLoop()
-        //coordinates
-        // const x = 5
-        // const y = 5
-        // console.log('pur')
-        const image = new Image()
-        // const hero = new Image()
-        // const npcShadow = (x, y) => {
-        //     this.ctx.beginPath();
-        //     this.ctx.arc((x * 48)+24, (y * 48) + 36, 12, 0, 2 * Math.PI); // Draw a circle
-        //     this.ctx.fillStyle = 'rgba(128, 128, 128, 0.75)'; // Set the color to grey with 50% opacity
-        //     this.ctx.fill();
-        // }; Doesn't work the circle is erased by image
-    
-        const loadImage = (img, src) => {
-            return new Promise((resolve, reject) => {
-                img.onload = () => resolve(img)
-                img.onerror = reject
-                img.src = src
-            });
-        }
-
-        //placing GameObjects
-        const hero = new GameObject({
-            x: 5,
-            y: 5,
-        })
-
-        const npc1 = new GameObject({
-            x: 6,
-            y: 7,
-        })
-
         const drawGrid = () => {
             const size = 48;// size of a tile
             const width = this.canvas.width
@@ -69,29 +52,5 @@ class Overworld {
             this.ctx.strokeStyle = 'black'
             this.ctx.stroke()
         }
-    
-    //using promises because i want to drow the map then the characters
-    //because if the map is heavier than the characters then it will draw on top of them
-        Promise.all([
-            loadImage(image, "./public/img/Map001.png"),
-            // loadImage(hero, "./public/img/hero.png"),
-        ]).then(() => {
-            // npcShadow(x,y) doesn't work
-            this.ctx.drawImage(image, 0, 0) // Draw the map
-            // this.ctx.drawImage(hero, // Draw the character
-            //     0, //left cut
-            //     0, //top cut
-            //     48,
-            //     48,
-            //     x * 48, //48 because a tile is 48 
-            //     y * 48,
-            //     48,
-            //     48)
-            setTimeout(() => {
-                hero.sprite.draw(this.ctx)
-                npc1.sprite.draw(this.ctx)        
-            }, 200);
-            drawGrid()
-        }).catch(console.error)
     }
 }
