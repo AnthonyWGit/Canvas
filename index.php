@@ -9,8 +9,8 @@
     <title>Document</title>
 </head>
 <body>
-<div class="game-wrapper"></div>
-    <canvas id="game" width="800" height="600">
+<div class="game-wrapper">
+    <canvas id="game" width="480" height="480">
 
     </canvas>
 </div>
