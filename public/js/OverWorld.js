@@ -10,11 +10,11 @@ class Overworld {
     {
 
         //coordinates
-        const x = 5
-        const y = 5
-        console.log('pur')
+        // const x = 5
+        // const y = 5
+        // console.log('pur')
         const image = new Image()
-        const hero = new Image()
+        // const hero = new Image()
         // const npcShadow = (x, y) => {
         //     this.ctx.beginPath();
         //     this.ctx.arc((x * 48)+24, (y * 48) + 36, 12, 0, 2 * Math.PI); // Draw a circle
@@ -29,6 +29,17 @@ class Overworld {
                 img.src = src
             });
         }
+
+        //placing GameObjects
+        const hero = new GameObject({
+            x: 5,
+            y: 5,
+        })
+
+        const npc1 = new GameObject({
+            x: 6,
+            y: 7,
+        })
 
         const drawGrid = () => {
             const size = 48;// size of a tile
@@ -53,20 +64,23 @@ class Overworld {
     //because if the map is heavier than the characters then it will draw on top of them
         Promise.all([
             loadImage(image, "./public/img/Map001.png"),
-            loadImage(hero, "./public/img/hero.png"),
+            // loadImage(hero, "./public/img/hero.png"),
         ]).then(() => {
             // npcShadow(x,y) doesn't work
             this.ctx.drawImage(image, 0, 0) // Draw the map
-            this.ctx.drawImage(hero, // Draw the character
-                0, //left cut
-                0, //top cut
-                48,
-                48,
-                x * 48, //48 because a tile is 48 
-                y * 48,
-                48,
-                48)
-
+            // this.ctx.drawImage(hero, // Draw the character
+            //     0, //left cut
+            //     0, //top cut
+            //     48,
+            //     48,
+            //     x * 48, //48 because a tile is 48 
+            //     y * 48,
+            //     48,
+            //     48)
+            setTimeout(() => {
+                hero.sprite.draw(this.ctx)
+                npc1.sprite.draw(this.ctx)        
+            }, 200);
             drawGrid()
         }).catch(console.error)
     }
