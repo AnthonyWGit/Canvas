@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="game-wrapper">
-    <canvas id="game" width="480" height="480">
+    <canvas id="game" width="1440" height="1440">
 
     </canvas>
 </div>
