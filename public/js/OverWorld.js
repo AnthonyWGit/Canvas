@@ -14,11 +14,13 @@ class Overworld {
             //draw terrain
             this.map.drawLowerImage(this.ctx)
 
-            //draw GameObjects 
+            //draw GameObjects with properties to manipulate their position
             Object.values(this.map.gameObjects).forEach(object =>
                 {
                     object.update({
                         arrow : this.directionInput.direction,
+                        target : this.directionInput.target,
+                        directionInput : this.directionInput, //access to clear target method 
                     })
                     object.sprite.draw(this.ctx)
                 })
