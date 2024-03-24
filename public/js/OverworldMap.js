@@ -47,6 +47,7 @@ window.OverworldMaps = {
         upperSrc :  "",
         gameObjects : {
             hero : new Person({
+                    isPlayerControlled : true,
                     x:utils.withGrid(5),
                     y:utils.withGrid(5)
                     //optional src for here sprite here 
