@@ -22,6 +22,9 @@ class Overworld {
 
             //draw stuff on top
             this.map.drawUpperImage(this.ctx)
+            
+            //draw the grid
+            this.map.drawGrid(this.ctx, this.canvas)
 
             requestAnimationFrame(() => { //to keep calling the function when a new fram beggings 
                 step()
@@ -34,23 +37,5 @@ class Overworld {
     {
         this.map = new OverworldMap(window.OverworldMaps.WorldMap)
         this.startGameLoop()
-        const drawGrid = () => {
-            const size = 48;// size of a tile
-            const width = this.canvas.width
-            const height = this.canvas.height
-    
-            for (let x = 0; x <= width; x += size) {
-                this.ctx.moveTo(x, 0);
-                this.ctx.lineTo(x, height);
-            }
-    
-            for (let y = 0; y <= height; y += size) {
-                this.ctx.moveTo(0, y)
-                this.ctx.lineTo(width, y)
-            }
-    
-            this.ctx.strokeStyle = 'black'
-            this.ctx.stroke()
-        }
     }
 }

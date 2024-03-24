@@ -19,6 +19,26 @@ class OverworldMap{
     {
         ctx.drawImage(this.upperImage, 0 , 0)
     }
+
+    drawGrid(ctx, canvas) 
+    {
+        const size = 48;// size of a tile
+        const width = canvas.width
+        const height = canvas.height
+
+        for (let x = 0; x <= width; x += size) {
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, height);
+        }
+
+        for (let y = 0; y <= height; y += size) {
+            ctx.moveTo(0, y)
+            ctx.lineTo(width, y)
+        }
+
+        ctx.strokeStyle = 'black'
+        ctx.stroke()
+    }
 }
 
 window.OverworldMaps = {
