@@ -46,12 +46,12 @@ window.OverworldMaps = {
         lowerSrc :  "./public/img/Map001.png",
         upperSrc :  "",
         gameObjects : {
-            hero : new GameObject({
+            hero : new Person({
                     x:utils.withGrid(5),
                     y:utils.withGrid(5)
                     //optional src for here sprite here 
                 }),
-            npc1 : new GameObject({
+            npc1 : new Person({
                     x: utils.withGrid(6),
                     y: utils.withGrid(7),
                 })
