@@ -1,7 +1,6 @@
 class DirectionInput{
     constructor(){
         this.heldDirections = []
-
         this.map = {
             "ArrowUp" : "up",
             "KeyW" : "up",
@@ -12,26 +11,23 @@ class DirectionInput{
             "ArrowRight" : "right",
             "KeyD" : "right",
         }
+        this.target = null //This is used for clicking controls
+        this.tempCanvas = document.querySelector('#game')
+        this.gameWrapper= document.querySelector('.game-wrapper')
     }
-
     get direction(){
-        return this.heldDirections[0]
+        return this.heldDirections[0] //getter to return the last input held 
     }
-
     init()
     {
         document.addEventListener('keydown', e => {
-            // console.log(this.heldDirections)
             const dir = this.map[e.code]
             if (dir && this.heldDirections.indexOf(dir) === -1)
             {
                 this.heldDirections.unshift(dir)
             }
         })
-
-        //allows for responsiveness i.e when player presses two keys at the same time 
         document.addEventListener('keyup', e => {
-            // console.log(this.heldDirections)
             const dir = this.map[e.code]
             const index = this.heldDirections.indexOf(dir)
             if (index > -1)
@@ -39,9 +35,21 @@ class DirectionInput{
                 this.heldDirections.splice(index,1)
             }
         })
+        this.tempCanvas.addEventListener('click', e => {
+            const rect = this.tempCanvas.getBoundingClientRect();
+            const scaleX = rect.width / this.tempCanvas.offsetWidth
+            const scaleY = rect.height / this.tempCanvas.offsetHeight
+            // Calculate the click position in the canvas, adjusted for scale and translation
+            const x = (e.clientX - rect.left) / scaleY;
+            const y = (e.clientY - rect.top) / scaleX;
+            console.log(x,y)
+            this.target = { x: x, y: y };
+        });
+        
+    }
 
-        document.addEventListener('click', e => {
-            console.log(e)
-        })
+    clearTarget()
+    {
+        this.target = null
     }
 }
