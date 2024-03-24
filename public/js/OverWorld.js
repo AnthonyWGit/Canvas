@@ -27,7 +27,7 @@ class Overworld {
             this.map.drawUpperImage(this.ctx)
             
             //draw the grid
-            // this.map.drawGrid(this.ctx, this.canvas)
+            this.map.drawGrid(this.ctx, this.canvas)
 
             requestAnimationFrame(() => { //to keep calling the function when a new fram beggings 
                 step()
