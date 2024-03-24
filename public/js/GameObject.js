@@ -11,6 +11,7 @@ class GameObject
                 src : config.src || "./public/img/hero.png" , //if no defaults has been set 
             }
         );
+        this.target = config.target || null
     }
 
     update()
