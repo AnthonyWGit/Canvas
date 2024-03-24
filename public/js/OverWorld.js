@@ -4,7 +4,13 @@ class Overworld {
         this.element = config.element
         this.canvas = this.element.querySelector("#game")
         this.ctx = this.canvas.getContext("2d")
-        this.map = null;
+        this.map = null
+
+        // Create an off-screen canvas for the grid
+        this.gridCanvas = document.createElement('canvas')
+        this.gridCanvas.width = this.canvas.width
+        this.gridCanvas.height = this.canvas.height
+        this.gridCtx = this.gridCanvas.getContext('2d')
     }
 
     startGameLoop(){
@@ -27,9 +33,8 @@ class Overworld {
 
             //draw stuff on top
             this.map.drawUpperImage(this.ctx)
-            
-            //draw the grid
-            this.map.drawGrid(this.ctx, this.canvas)
+            //draw the grid from the off-screen canvas
+            this.ctx.drawImage(this.gridCanvas, 0, 0)
 
             requestAnimationFrame(() => { //to keep calling the function when a new fram beggings 
                 step()
@@ -46,6 +51,7 @@ class Overworld {
         this.directionInput.init()
         this.directionInput.direction
 
+        this.map.drawGrid(this.gridCtx, this.gridCanvas)
         this.startGameLoop()
     }
 }
