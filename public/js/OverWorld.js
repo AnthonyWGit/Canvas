@@ -17,7 +17,9 @@ class Overworld {
             //draw GameObjects 
             Object.values(this.map.gameObjects).forEach(object =>
                 {
-                    object.update({})
+                    object.update({
+                        arrow : this.directionInput.direction,
+                    })
                     object.sprite.draw(this.ctx)
                 })
 
@@ -25,7 +27,7 @@ class Overworld {
             this.map.drawUpperImage(this.ctx)
             
             //draw the grid
-            this.map.drawGrid(this.ctx, this.canvas)
+            // this.map.drawGrid(this.ctx, this.canvas)
 
             requestAnimationFrame(() => { //to keep calling the function when a new fram beggings 
                 step()
@@ -37,6 +39,11 @@ class Overworld {
     init()
     {
         this.map = new OverworldMap(window.OverworldMaps.WorldMap)
+
+        this.directionInput = new DirectionInput()
+        this.directionInput.init()
+        this.directionInput.direction
+
         this.startGameLoop()
     }
 }
