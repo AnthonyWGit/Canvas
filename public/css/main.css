@@ -51,5 +51,17 @@ body
     height: 1440px;
     outline: 1px solid white;
     margin: 0 auto;
-    transform: scale(3) translateY(25%) translateX(25%); 
+    transform: scale(3) translateY(25%); 
+}
+
+@media (max-width : 500px) {
+    .game-wrapper
+{
+    position: relative;
+    width: 1440px;
+    height: 1440px;
+    outline: 1px solid white;
+    margin: 0 auto;
+    transform: scale(2.5) translateY(25%) translateX(25%); 
+}
 }
