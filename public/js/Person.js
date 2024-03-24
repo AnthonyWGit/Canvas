@@ -1,10 +1,10 @@
 class Person extends GameObject
 {
  constructor(config){
-    super(config) //config of GameObject
-    this.movingProgressRemaining = 48 //using that so people can't be in between grid && is a speed controller
-    this.speed = 4 // must be a multiple of 2 
-    this.isPlayerControlled = config.isPlayerControlled || false
+    super(config) //config of game Object 
+    this.movingProgressRemaining = 0 //0 so npc don't move on spawn
+    this.speed = 4 // speed controller must be multiple of 2 
+    this.isPlayerControlled = config.isPlayerControlled || false 
 
     this.directionUpdate = {
         "up" : ["y", -1],
@@ -12,22 +12,39 @@ class Person extends GameObject
         "left" : ["x", -1],
         "right" : ["x", 1],
     }
+    this.target = config.target || null //when using clicks
  }
-
  update(state){
     this.updatePosition()
+
     if (this.isPlayerControlled && this.movingProgressRemaining === 0 && state.arrow){
         this.direction = state.arrow
-        this.movingProgressRemaining = 48
+        this.movingProgressRemaining = 48 //So objects end up snapped IN grid
+    }
+    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && state.target){
+        const dx = state.target.x - this.x; // calculate a delta and if between 1 and 47
+        const dy = state.target.y - this.y; //it means we are on same cell so no movement 
+        if ( (0 < dx && dx < 48) && (0 < dy && dy < 48) ) //same cell
+        {
+            this.movingProgressRemaining = 0
+            state.directionInput.clearTarget()
+        }
+        else //different cell
+        {
+            if (dx > 48) this.direction = 'right';
+            else if (dx < 0) this.direction = 'left';
+            else if (dy > 48) this.direction = 'down';
+            else if (dy < 0) this.direction = 'up';            
+            this.movingProgressRemaining = 48
+        }
     }
  }
-
  updatePosition() {
     if (this.movingProgressRemaining > 0)
     {
-        const [property,change] = this.directionUpdate[this.direction]  // can work because it exists in GameObjects
-        this[property] += change * this.speed //or just change
-        this.movingProgressRemaining -= this.speed // or just 1 if no speed 
+        const [property,change] = this.directionUpdate[this.direction]
+        this[property] += change * this.speed
+        this.movingProgressRemaining -= this.speed //speed modifier used here 
     }
  }
 }
