@@ -51,5 +51,5 @@ body
     height: 1440px;
     outline: 1px solid white;
     margin: 0 auto;
-    transform: scale(1.5) translateY(25%) translateX(25%); 
+    transform: scale(3) translateY(25%) translateX(25%); 
 }
