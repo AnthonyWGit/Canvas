@@ -5,7 +5,6 @@ class Person extends GameObject
     this.movingProgressRemaining = 0 //0 so npc don't move on spawn
     this.speed = 4 // speed controller must be multiple of 2 
     this.isPlayerControlled = config.isPlayerControlled || false 
-
     this.directionUpdate = {
         "up" : ["y", -1],
         "down" : ["y", 1],
@@ -13,15 +12,26 @@ class Person extends GameObject
         "right" : ["x", 1],
     }
     this.target = config.target || null //when using clicks
+    this.idleAnimation = config.idleAnimation || "idle-down"; // Add this line
  }
  update(state){
-    this.updatePosition()
-    this.updateSprite(state)
-
-    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && state.arrow){
-        this.direction = state.arrow
-        this.movingProgressRemaining = 48 //So objects end up snapped IN grid
+    if (this.movingProgressRemaining > 0) {
+        this.updatePosition()      
     }
+    else{
+
+        //More cases to walk here 
+
+        //we're keyboard ready and have pressed an arrow
+        if (this.isPlayerControlled  && state.arrow){
+            this.startBehaviour(state, {
+                type : "walk",
+                direction : state.arrow,
+            })
+        }
+        this.updateSprite(state)  
+    }
+
     if (this.isPlayerControlled && this.movingProgressRemaining === 0 && state.target){
         const dx = state.target.x - this.x; // calculate a delta and if between 1 and 47
         const dy = state.target.y - this.y; //it means we are on same cell so no movement 
@@ -40,25 +50,30 @@ class Person extends GameObject
         }
     }
  }
- updatePosition() {
-    if (this.movingProgressRemaining > 0)
-    {
-        const [property,change] = this.directionUpdate[this.direction]
-        this[property] += change * this.speed
-        this.movingProgressRemaining -= this.speed //speed modifier used here 
-    }
+ startBehaviour(state, behaviour)
+ {//set char direction to w/e behaviour it has 
+     this.direction = behaviour.direction
+     if (behaviour.type == "walk"){
+         if (state.map.isSpaceTaken(this.x, this.y, this.direction)){
+             return //don't go further if space is taken 
+         }
+         this.movingProgressRemaining = 48 //So objects end up snapped IN grid            
+     }
  }
- updateSprite(state)
+ 
+ updatePosition() {
+    const [property,change] = this.directionUpdate[this.direction]
+    this[property] += change * this.speed
+    this.movingProgressRemaining -= this.speed //speed modifier used here 
+ }
+ updateSprite()
  {
-    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && !state.arrow && !state.target)
-    {
-        this.sprite.setAnimation("idle-"+this.direction)
+    if(this.movingProgressRemaining > 0){
+        this.sprite.setAnimation('walk-'+ this.direction)
         return
     }
-
-    if(this.movingProgressRemaining > 0){
-        this.sprite.setAnimation('walk-'+this.direction)
-    }
-
+    if (this. movingProgressRemaining === 0 && this.isPlayerControlled) this.sprite.setAnimation('idle-'+ this.direction) // remove if in case you wan't npcs to stand when idle
+    if (this.movingProgressRemaining === 0 && !this.isPlayerControlled) this.sprite.setAnimation(this.idleAnimation) // Add this line
+    // remove if in case you wan't npcs to stand when idle  
  }
 }
