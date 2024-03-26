@@ -9,11 +9,11 @@ class Sprite {
 
         //config animations & initial state
         this.animations = config.animations || {
-            idleDown: [
+            "idle-down": [
                 [0, 0]
             ],
         }
-        this.currentAnimation = config.currentAnimation || "idleDown"
+        this.currentAnimation = config.currentAnimation || "idle-down"
         this.currentAnimationFrame = 0
 
         //references the gameObject
@@ -25,7 +25,7 @@ class Sprite {
         const y = this.gameObject.y
 
         this.isLoaded && ctx.drawImage(this.image,
-            0, 0,
+            48, 0,
             48, 48,
             x, y,
             48, 48
