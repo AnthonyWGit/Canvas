@@ -3,7 +3,7 @@ class Person extends GameObject
  constructor(config){
     super(config) //config of game Object 
     this.movingProgressRemaining = 0 //0 so npc don't move on spawn
-    this.speed = 2 // speed controller must be multiple of 2 
+    this.speed = 4 // speed controller must be multiple of 2 
     this.isPlayerControlled = config.isPlayerControlled || false 
 
     this.directionUpdate = {
@@ -32,10 +32,10 @@ class Person extends GameObject
         }
         else //different cell
         {
-            if (dx > 48) this.direction = 'right';
-            else if (dx < 0) this.direction = 'left';
-            else if (dy > 48) this.direction = 'down';
-            else if (dy < 0) this.direction = 'up';            
+            if (dx > 48) this.direction = 'right'
+            else if (dx < 0) this.direction = 'left'
+            else if (dy > 48) this.direction = 'down'
+            else if (dy < 0) this.direction = 'up'          
             this.movingProgressRemaining = 48
         }
     }
@@ -50,15 +50,15 @@ class Person extends GameObject
  }
  updateSprite(state)
  {
-    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && !state.arrow)
+    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && !state.arrow && !state.target)
     {
-        this.sprite.setAnimation("walk-"+this.direction)
+        this.sprite.setAnimation("idle-"+this.direction)
         return
     }
-
 
     if(this.movingProgressRemaining > 0){
         this.sprite.setAnimation('walk-'+this.direction)
     }
+
  }
 }
