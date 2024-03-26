@@ -20,6 +20,9 @@ class Overworld {
             //draw terrain
             this.map.drawLowerImage(this.ctx)
 
+            //camera
+            this.camera.update(this.map.gameObjects.hero, this.canvas);
+
             //draw GameObjects with properties to manipulate their position
             Object.values(this.map.gameObjects).forEach(object =>
                 {
@@ -46,12 +49,18 @@ class Overworld {
     init()
     {
         this.map = new OverworldMap(window.OverworldMaps.WorldMap)
+        this.camera = new Camera({
+            x: this.map.gameObjects.hero.x,
+            y: this.map.gameObjects.hero.y,
+            once: true
+        });
 
         this.directionInput = new DirectionInput()
         this.directionInput.init()
         this.directionInput.direction
 
         this.map.drawGrid(this.gridCtx, this.gridCanvas)
+        this.camera.init(this.map.gameObjects.hero)
         this.startGameLoop()
     }
 }

@@ -17,6 +17,7 @@
 </body>
 <script src="./public/js/utils.js"></script>
 <script src="./public/js/DirectionInput.js"></script>
+<script src="./public/js/Camera.js"></script>
 <script src="./public/js/Overworld.js"></script>
 <script src="./public/js/GameObject.js"></script>
 <script src="./public/js/Person.js"></script>
