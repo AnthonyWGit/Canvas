@@ -2,6 +2,7 @@ class OverworldMap{
     constructor(config)
     {
         this.gameObjects = config.gameObjects
+        this.walls = config.walls || {}
 
         this.lowerImage = new Image();
         this.lowerImage.src = config.lowerSrc;
@@ -18,6 +19,12 @@ class OverworldMap{
     drawUpperImage(ctx)
     {
         ctx.drawImage(this.upperImage, 0 , 0)
+    }
+
+    isSpaceTaken(currentX, currentY, direction)
+    {
+        const {x,y} = utils.nextPosition(currentX, currentY, direction)
+        return this.walls[`${x},${y}`] || false //left there is a wall in direction faction else false 
     }
 
     drawGrid(ctx, canvas) 
@@ -41,7 +48,8 @@ class OverworldMap{
     }
 }
 
-window.OverworldMaps = {
+window.OverworldMaps = 
+{
     WorldMap : {
         lowerSrc :  "./public/img/Map001.png",
         upperSrc :  "",
@@ -55,10 +63,36 @@ window.OverworldMaps = {
             npc1 : new Person({
                     x: utils.withGrid(6),
                     y: utils.withGrid(7),
-                })
-        }
-    },
+                }),
+        },
+            walls : {
+                // "48,48" : true
+                [utils.asGridCoord(8,6)] : true,
+                [utils.asGridCoord(9,6)] : true,
+                [utils.asGridCoord(7,6)] : true,
+                [utils.asGridCoord(10,6)] : true,
+                [utils.asGridCoord(8,7)] : true,
+                [utils.asGridCoord(9,7)] : true,
+                [utils.asGridCoord(7,7)] : true,
+                [utils.asGridCoord(10,7)] : true,
+                [utils.asGridCoord(8,8)] : true,
+                [utils.asGridCoord(9,8)] : true,
+                [utils.asGridCoord(7,8)] : true,
+                [utils.asGridCoord(10,8)] : true,
+                [utils.asGridCoord(8,5)] : true,
+                [utils.asGridCoord(9,5)] : true,
+                [utils.asGridCoord(7,5)] : true,
+                [utils.asGridCoord(10,5)] : true,
+                [utils.asGridCoord(8,4)] : true,
+                [utils.asGridCoord(9,4)] : true,
+                [utils.asGridCoord(7,4)] : true,
+                [utils.asGridCoord(10,4)] : true,
+                [utils.asGridCoord(6,7)] : true,
+            },
+        },
+    
     AdFinemRoom : {
 
     }
 }
+
