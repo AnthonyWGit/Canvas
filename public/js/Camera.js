@@ -14,7 +14,7 @@ class Camera
             this.y = player.y
             const gameWrapper = document.querySelector('.game-wrapper')
             window.scrollTo(this.x, this.y)
-            console.log(this.x, this.y)     
+            // console.log(this.x, this.y)     
         }
     }
 
