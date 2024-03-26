@@ -3,7 +3,7 @@ class Person extends GameObject
  constructor(config){
     super(config) //config of game Object 
     this.movingProgressRemaining = 0 //0 so npc don't move on spawn
-    this.speed = 4 // speed controller must be multiple of 2 
+    this.speed = 2 // speed controller must be multiple of 2 
     this.isPlayerControlled = config.isPlayerControlled || false 
 
     this.directionUpdate = {
@@ -50,6 +50,15 @@ class Person extends GameObject
  }
  updateSprite(state)
  {
-    this.sprite.setAnimation("idle-"+this.direction)
+    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && !state.arrow)
+    {
+        this.sprite.setAnimation("walk-"+this.direction)
+        return
+    }
+
+
+    if(this.movingProgressRemaining > 0){
+        this.sprite.setAnimation('walk-'+this.direction)
+    }
  }
 }
