@@ -30,6 +30,7 @@ class Overworld {
                         arrow : this.directionInput.direction,
                         target : this.directionInput.target,
                         directionInput : this.directionInput, //access to clear target method 
+                        map : this.map,
                     })
                     object.sprite.draw(this.ctx)
                 })
@@ -61,6 +62,7 @@ class Overworld {
 
         this.map.drawGrid(this.gridCtx, this.gridCanvas)
         this.camera.init(this.map.gameObjects.hero)
+        console.log(this.map.walls)
         this.startGameLoop()
     }
 }
