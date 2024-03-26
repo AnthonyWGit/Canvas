@@ -18,7 +18,7 @@ class Sprite {
             "walk-left" : [[0,1],[1,1],[2,1],[1,1]],
             "walk-up" : [[0,3],[1,3],[2,3],[1,3]],
         }
-        this.currentAnimation = "walk-left" //config.currentAnimation || "idle-down"
+        this.currentAnimation = config.currentAnimation || "walk-left"
         this.currentAnimationFrame = 0
 
         this.animationFrameLimit = config.animationFrameLimit || 16 //Increase = animation is slower ; decrase animation is faster
