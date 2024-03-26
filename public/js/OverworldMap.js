@@ -63,6 +63,8 @@ window.OverworldMaps =
             npc1 : new Person({
                     x: utils.withGrid(6),
                     y: utils.withGrid(7),
+                    idleAnimation : "walk-down"
+
                 }),
         },
             walls : {
