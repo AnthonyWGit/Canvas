@@ -21,7 +21,7 @@ class Overworld {
             this.map.drawLowerImage(this.ctx)
 
             //camera
-            this.camera.update(this.map.gameObjects.hero, this.canvas);
+            // this.camera.update(this.map.gameObjects.hero, this.canvas);
 
             //draw GameObjects with properties to manipulate their position
             Object.values(this.map.gameObjects).forEach(object =>
@@ -62,7 +62,6 @@ class Overworld {
 
         this.map.drawGrid(this.gridCtx, this.gridCanvas)
         this.camera.init(this.map.gameObjects.hero)
-        console.log(this.map.walls)
         this.startGameLoop()
     }
 }

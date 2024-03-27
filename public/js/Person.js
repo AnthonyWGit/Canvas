@@ -13,13 +13,13 @@ class Person extends GameObject
     }
     this.target = config.target || null //when using clicks
     this.idleAnimation = config.idleAnimation || "idle-down"; // Add this line
+    this.path = null
  }
  update(state){
     if (this.movingProgressRemaining > 0) {
         this.updatePosition()      
     }
     else{
-
         //More cases to walk here 
 
         //we're keyboard ready and have pressed an arrow
@@ -29,33 +29,48 @@ class Person extends GameObject
                 direction : state.arrow,
             })
         }
-        this.updateSprite(state)  
+        else if (this.isPlayerControlled && state.target)
+        {
+            this.path = state.map.findPath({x: this.x, y: this.y}, state.target);
+            console.log(this.path)
+            let startX = Math.floor(this.x / 48);
+            let startY = Math.floor(this.y / 48);
+            let goalX = Math.floor(state.target.x / 48);
+            let goalY = Math.floor(state.target.y / 48);
+            this.path = state.map.findPath({x: startX, y: startY}, {x: goalX, y: goalY});
+            if (this.path === null || this.path.length === 0) {
+                state.directionInput.clearTarget()
+                console.log(this.path);
+            }
+            if (this.path !== null && this.path.length > 0) {
+                let nextStep = this.path.shift();
+                this.direction = this.getDirectionTo(nextStep);
+                console.log(this.path)
+                this.startBehaviour(state, {
+                    type: "walk",
+                    direction: this.direction
+                });
+            // }
+        }
+        }
     }
+    this.updateSprite(state)  
+    }
+ 
 
-    if (this.isPlayerControlled && this.movingProgressRemaining === 0 && state.target){
-        const dx = state.target.x - this.x; // calculate a delta and if between 1 and 47
-        const dy = state.target.y - this.y; //it means we are on same cell so no movement 
-        if ( (0 < dx && dx < 48) && (0 < dy && dy < 48) ) //same cell
-        {
-            this.movingProgressRemaining = 0
-            state.directionInput.clearTarget()
-        }
-        else //different cell
-        {
-            if (dx > 48) this.direction = 'right'
-            else if (dx < 0) this.direction = 'left'
-            else if (dy > 48) this.direction = 'down'
-            else if (dy < 0) this.direction = 'up'          
-            this.movingProgressRemaining = 48
-        }
-    }
- }
+getDirectionTo(nextStep) {
+    if (nextStep.x > this.x) return 'right';
+    if (nextStep.x < this.x) return 'left';
+    if (nextStep.y > this.y) return 'down';
+    if (nextStep.y < this.y) return 'up';
+}
+
  startBehaviour(state, behaviour)
  {//set char direction to w/e behaviour it has 
      this.direction = behaviour.direction
      if (behaviour.type == "walk"){
-         if (state.map.isSpaceTaken(this.x, this.y, this.direction)){
-             return //don't go further if space is taken 
+         if (state.map.isSpaceTaken(this.x, this.y, this.direction) && !state.target){
+            return //don't go further if space is taken 
          }
          this.movingProgressRemaining = 48 //So objects end up snapped IN grid            
      }
