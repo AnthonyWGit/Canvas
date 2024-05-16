@@ -32,6 +32,43 @@ class OverworldMap{
         const {x,y} = utils.nextPositionUngrid(currentX, currentY, direction)
         return this.walls[`${x},${y}`] || false //left there is a wall in direction faction else false 
     }
+    //Detect all free cells around a cell 
+    wallsAround(currentX, currentY)
+    {
+        let neighbors = []
+        for (let i = 0; i < 4; i++){
+            let x, y;
+            switch (i){
+                case 0:
+                    x = currentX + 1;
+                    y = currentY;
+                    console.log(this.walls[`${x * 48},${y * 48}`])
+                    if (!this.walls[`${x * 48},${y * 48}`]) neighbors.push({x, y});
+                    break;
+                case 1:
+                    x = currentX - 1;
+                    y = currentY;
+                    if (!this.walls[`${x * 48},${y * 48}`]) neighbors.push({x, y});
+                    break;
+                case 2:
+                    x = currentX;
+                    y = currentY + 1;
+                    if (!this.walls[`${x * 48},${y * 48}`]) neighbors.push({x, y});
+                    break;
+                case 3:
+                    x = currentX;
+                    y = currentY - 1;
+                    if (!this.walls[`${x * 48},${y * 48}`]) neighbors.push({x, y});
+                    break;
+            }
+        }
+        console.log(neighbors, 'NEIGHBORS IN WALLSAROUND')
+        return neighbors;
+    }
+    isWall(target){
+        if (!this.walls[`${target.x * 48},${target.y * 48}`]) return true
+        return false
+    }
 
     drawGrid(ctx, canvas) 
     {
@@ -49,91 +86,11 @@ class OverworldMap{
             ctx.lineTo(width, y)
         }
 
-        ctx.strokeStyle = 'black'
+        ctx.strokeStyle = 'withe'
         ctx.stroke()
     }
 
-    findPath(start, goal) {
-        let openSet = [start]
-        let cameFrom = {}
-        let gScore = {}
-        let fScore = {}
-        gScore[start] = 0
-        fScore[start] = this.heuristicCostEstimate(start, goal)
-        console.log("openSet", openSet, cameFrom, gScore, fScore,start, goal)
-        while (openSet.length > 0) {
-            let current = this.lowestFScore(openSet, fScore)
-            if (current === goal) {
-                return this.reconstructPath(cameFrom, current)
-            }
-            openSet = openSet.filter(node => node !== current)
-            console.log("opesnet222", openSet)
-            for (let neighbor of this.getNeighbors(current)) {
-                let tentativeGScore = gScore[current] + this.distanceBetween(current, neighbor)
-                console.log(neighbor,tentativeGScore, gScore, current, gScore[neighbor], "SCORE")
-                if (!(neighbor in gScore) || tentativeGScore < gScore[neighbor]) {
-                    cameFrom[neighbor] = current;
-                    gScore[neighbor] = tentativeGScore;
-                    fScore[neighbor] = gScore[neighbor] + this.heuristicCostEstimate(neighbor, goal)
-                    if (!openSet.includes(neighbor)) {
-                        openSet.push(neighbor);
-                    }
-                }
-            }
-        }
-        return null; // Return null if no path is found
-    }
-
-    heuristicCostEstimate(start, goal) {
-        // Implement your heuristic here. For example, using Manhattan distance:
-        console.log(start,goal, "math :", Math.abs(goal.x - start.x) + Math.abs(goal.y - start.y) )
-        return Math.abs(goal.x - start.x) + Math.abs(goal.y - start.y);
-    }
-
-    lowestFScore(openSet, fScore) {
-        let lowest = openSet[0];
-        for (let node of openSet) {
-            if (fScore[node] < fScore[lowest]) {
-                lowest = node;
-            }
-        }
-        return lowest;
-    }
-
-    reconstructPath(cameFrom, current) {
-        let totalPath = [current];
-        while (current in cameFrom) {
-            current = cameFrom[current];
-            totalPath.unshift(current);
-        }
-        console.log("recon", totalPath, cameFrom, current)
-        return totalPath;
-    }
-
-    getNeighbors(node) {
-        // Define the possible directions a node can move to
-        const directions = ['left', 'right', 'up', 'down'];
-
-        // Calculate the neighbors of the current node
-        let neighbors = [];
-        for (let direction of directions) {
-            let {x, y} = utils.nextPositionUngrid(node.x, node.y, direction);
-            console.log("node", x, y, direction, node)
-            if (!this.isSpaceTaken(node.x, node.y, direction)) {
-                neighbors.push({x, y});
-            }
-        }
-        console.log(neighbors)
-        return neighbors;
-    }
-
-    distanceBetween(current, neighbor) {
-        // Since your grid is 48x48 and your characters move one cell at a time,
-        // the distance between two adjacent cells is always 1.
-        return 1;
-    }
 }
-
 window.OverworldMaps = 
 {
     WorldMap : {
@@ -143,7 +100,7 @@ window.OverworldMaps =
             hero : new Person({
                     isPlayerControlled : true,
                     x:utils.withGrid(5),
-                    y:utils.withGrid(5)
+                    y:utils.withGrid(5),
                     //optional src for here sprite here 
                 }),
             npc1 : new Person({
@@ -180,7 +137,6 @@ window.OverworldMaps =
         },
     
     AdFinemRoom : {
-
     }
 }
 
