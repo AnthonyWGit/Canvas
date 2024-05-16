@@ -66,10 +66,14 @@ class OverworldMap{
         return neighbors;
     }
     isWall(target){
-        if (!this.walls[`${target.x * 48},${target.y * 48}`]) return true
-        return false
+        // Convert the target's x and y coordinates to grid coordinates
+        let transformedX = Math.floor(target.x / 48);
+        let transformedY = Math.floor(target.y / 48);
+    
+        // Check if there is a wall at the transformed coordinates
+        if (this.walls[`${transformedX * 48},${transformedY * 48}`]) return true;
+        return false;
     }
-
     drawGrid(ctx, canvas) 
     {
         const size = 48;// size of a tile
