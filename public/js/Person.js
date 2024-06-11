@@ -27,7 +27,6 @@ class Person extends GameObject
           this.target = null
           this.path = null
           state.directionInput.target = null //most import line, remove it and see what happens 
-          console.log(this.path, this.target, state, "PATH & TARGET")
             this.startBehaviour(state, {
                 type: "walk",
                 direction: state.arrow,
@@ -36,7 +35,7 @@ class Person extends GameObject
             let start = { x: Math.floor(this.x / 48), y: Math.floor(this.y / 48) };
             let goal = { x: Math.floor(state.target.x / 48), y: Math.floor(state.target.y / 48) };
             let calculatedDirection = this.targetDirection(state)
-            if (calculatedDirection /*&& !state.map.isWall(state.target)*/)
+            if (calculatedDirection && !state.map.isWall(state.target))
             {
                 this.path = this.aStar(start,goal,state)
                 this.startBehaviour(state, {
