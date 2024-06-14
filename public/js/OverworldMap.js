@@ -38,6 +38,7 @@ class OverworldMap{
         let neighbors = []
         for (let i = 0; i < 4; i++){
             let x, y;
+            console.log(currentX, currentY, 'CURRENT X & Y IN WALLSAROUND')
             switch (i){
                 case 0:
                     x = currentX + 1;
@@ -74,6 +75,13 @@ class OverworldMap{
         if (this.walls[`${transformedX * 48},${transformedY * 48}`]) return true;
         return false;
     }
+
+    isWallGrid(goal){
+        // Check if there is a wall at the transformed coordinates
+        if (this.walls[`${goal.x * 48},${goal.y * 48}`]) return true;
+        return false;
+    }
+
     drawGrid(ctx, canvas) 
     {
         const size = 48;// size of a tile
@@ -90,7 +98,7 @@ class OverworldMap{
             ctx.lineTo(width, y)
         }
 
-        ctx.strokeStyle = 'withe'
+        ctx.strokeStyle = 'red'
         ctx.stroke()
     }
 
